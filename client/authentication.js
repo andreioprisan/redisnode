@@ -6,7 +6,7 @@ var LoginErr, createUserError, recoverEmailError, passwordUpdateError;
 
 
 App.createUserAccount = function () {
-	console.log("INIT create user account ");
+	console.log("1INIT create user account ");
 	
 	// get the values form the input elements 
 	var username = $("#usernameSignup").val().toLowerCase();
@@ -15,17 +15,21 @@ App.createUserAccount = function () {
 	var firstName = $("#firstName").val();	
 	var lastName = $("#lastName").val();	
 
+	console.log("about to create user");
+	console.log([username, password, email, firstName, lastName]);
+
 	Accounts.createUser({
 		username: username, 
 		password: password, 
 		email: email, 
 		profile: {
 			firstName: firstName, 
-			lastName: lastName
+			lastName: lastName,
+			name: firstName+" "+lastName
 		}
 	}, function(error) {
 		if (error) {
-			console.log(error);
+			console.log("we got an error:"+error);
 			//$("#signupForm div .alert").remove();
 			$("#createUser").button('reset');
 			if (createUserError >= 1) {
@@ -227,7 +231,7 @@ App.loginHandleSubmit = {
 /*==========  EDIT PROFILE  ==========*/
 
 App.editUserAccount = function () {
-	console.log("INIT create user account ");
+	console.log("2INIT create user account ");
 	
 	// get the values form the input elements 
 	var firstName = $("#firstName").val();	

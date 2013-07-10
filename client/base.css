@@ -26,3 +26,8 @@
     margin: 0;
     line-height: 3em !important;
 }
+
+.jumbotron {
+margin: 10px 0;
+text-align: center;
+}

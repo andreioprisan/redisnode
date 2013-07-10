@@ -4,7 +4,7 @@ Meteor.Router.add({
         return 'home';
     },
 
-    '/static_pages/:page': function(page) {
+    '/s/:page': function(page) {
         Session.set("current_page", page);
         return page;
     },
