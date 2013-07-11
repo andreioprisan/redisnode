@@ -1,17 +1,4 @@
 var App = window.App || {};
-Plans = new Meteor.Collection("Plans");
-Meteor.subscribe("Plans");
-Instances = new Meteor.Collection("Instances");
-Meteor.subscribe("Instances");
-
-Meteor.subscribe("stripe_public");
-var isProd = 0;
-if (!isProd) {
-    var stripe_public = "pk_test_ujzLsEV3pNMBj9KIv5qkknUC";     
-} else {
-    var stripe_public = "pk_live_voZnzGKwR0aIZ3TjXd0vQhof";
-}
-Stripe.setPublishableKey(stripe_public);
 
 // Add 'active' class to current page link
 Handlebars.registerHelper('TabActive', function (route) {

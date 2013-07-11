@@ -31,18 +31,27 @@ Meteor.startup(function () {
 	  return Instances.find({owner: this.userId});
 	});
 
-	var isProd = 0;
-	if (!isProd) {
-		var stripe_secret = "sk_test_2cGa3day3OCg1ZVTPFPuRetY";
-		var stripe_public = "pk_test_ujzLsEV3pNMBj9KIv5qkknUC";		
+	Meteor.publish("Customers", function () {
+	  return Customers.find({owner: this.userId});
+	});
+
+	var os = Npm.require("os");
+	if (os.hostname() == "master.redisnode.com" ||
+		os.hostname() == "slave.redisnode.com") {
+		isProd = 1;
 	} else {
-		var stripe_secret = "sk_live_UEu9EQkB1BdOUOBrzYcXudBG";
-		var stripe_public = "pk_live_voZnzGKwR0aIZ3TjXd0vQhof";
+		isProd = 0;
 	}
 
-	Meteor.publish("stripe_public", function() { return stripe_public; });
+	if (!isProd) {
+		stripe_secret = "sk_test_2cGa3day3OCg1ZVTPFPuRetY";
+		stripe_public = "pk_test_ujzLsEV3pNMBj9KIv5qkknUC";		
+	} else {
+		stripe_secret = "sk_live_UEu9EQkB1BdOUOBrzYcXudBG";
+		stripe_public = "pk_live_voZnzGKwR0aIZ3TjXd0vQhof";
+	}
 
-	var Stripe = StripeAPI(stripe_secret);
+	Stripe = StripeAPI(stripe_secret);
 
 });
 
@@ -98,9 +107,10 @@ Meteor.methods({
 		return child;
     },
     'createCustomerFromCard': function createCustomerFromCard(name, email, ccnum, ccmonth, ccyear, cczip, planid) {
-    	console.log([name, email, ccnum, ccmonth, ccyear, cczip, planid]);
+		var Future = Npm.require('fibers/future');
+		var fut = new Future();
 
-    	Stripe.customer.create({
+    	Stripe.customers.create({
     		card: {
 		        number: ccnum,
 		        exp_month: ccmonth,
@@ -111,9 +121,16 @@ Meteor.methods({
 		    email: email,
 		    description: email,
 		    plan: planid
-    	}, function (err, res) {
-		    console.log(err, res);
-		});
+    	}, 
+		function(err, customer) {
+	        if (err) {
+	            console.log(err);
+	            fut.ret;
+	        }
+	        fut.ret(customer.id);
+	    });
+
+	    return fut.wait();
     }
   });
 

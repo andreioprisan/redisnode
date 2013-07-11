@@ -93,9 +93,18 @@ App.billUser = function () {
 	var ccnum = $("#creditCardNumber").val();	
 	var ccmonth = $("#ccMonth").val();	
 	var ccyear = $("#ccYear").val();	
-	var zip = $("#zipCode").val();	
+	var cczip = $("#zipCode").val();	
 
-    Meteor.call('createCustomerFromCard', firstName+" "+lastName, email, ccnum, ccmonth, ccyear, cczip, planId, function() {});
+    Meteor.call('createCustomerFromCard', firstName+" "+lastName, email, ccnum, ccmonth, ccyear, cczip, planId, 
+    	function(error, customer_id) {
+	    	if (!error) {
+				Customers.insert({plan: planId, owner: Meteor.user()._id, customer_id: customer_id});
+				Session.set('cardchargesuccess', 1);
+	    	} else {
+				Session.set('cardchargesuccess', 0);
+	    	}
+    	}
+    );
 
 
 	return 1;
@@ -208,7 +217,7 @@ App.login = function () {
 
 			$("#login").button('reset');
 		} else {
-			Meteor.Router.to("/");
+			Meteor.Router.to("/users/"+Meteor.user()._id+"");
 		}
 	});
 }
