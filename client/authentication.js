@@ -86,9 +86,6 @@ App.signupMessages = {
 };
 
 App.createNewUserAccount = function (username, email, password, firstName, lastName, planId, customer_id ) {
-	console.log("in new user creation")
-	console.log([username, email, password, firstName, lastName, planId, customer_id]);
-
 	Accounts.createUser({
 		username: username, 
 		password: password, 
@@ -98,10 +95,7 @@ App.createNewUserAccount = function (username, email, password, firstName, lastN
 			lastName: lastName,
 			plan: planId
 		}
-	}, function(error, other) {
-		console.log(error);
-		console.log(other);
-		
+	}, function(error, other) {		
 		if (error) {
 			$('.alert.alert-error').first().remove();
 			$("#createUser").button('reset');
@@ -120,11 +114,6 @@ App.createNewUserAccount = function (username, email, password, firstName, lastN
 				password: password};
 
 		    Meteor.call('provision', dataBlob, function(err, res) {
-		    	console.log("provision err:"+err);
-		    	console.log("provision res:"+res);
-
-			    console.log({plan: planId, port: port, password: password, owner: Meteor.user()._id});
-
 				Instances.insert({plan: planId, port: port, password: password, owner: Meteor.user()._id});
 
 				if (customer_id != null) {
@@ -150,8 +139,6 @@ App.createUserAccount = function () {
 	ccyear = $("#ccYear").val();	
 	cczip = $("#zipCode").val();	
 	name = firstName+" "+lastName;
-	console.log("App.billUser");
-	//return false;
 
 	if (planId != 0 && $("#creditCardNumber")) {
 		var dataBlob = { 
@@ -164,10 +151,6 @@ App.createUserAccount = function () {
 			planId: planId };
 
 	    Meteor.call('createCustomerFromCard', dataBlob, function(error, stripe_response) {
-    		console.log("createCustomerFromCard client");
-    		console.log(error);
-    		console.log(stripe_response);
-
 	    	if (!stripe_response.error) {
 				Session.set('cardchargesuccess', 1);
 	    		App.createNewUserAccount(username, email, password, firstName, lastName, planId, stripe_response._id);
@@ -175,7 +158,6 @@ App.createUserAccount = function () {
 				$('.alert.alert-error').first().remove();
 				$("#createUser").button('reset');
 				$("form#signupForm").before("<div class='alert alert-error'>Your card could not be charged. Please try again</div>");
-
 				Session.set('cardchargesuccess', 0);
 	    	}
     	}
@@ -304,9 +286,6 @@ App.loginHandleSubmit = {
 /*==========  EDIT PROFILE  ==========*/
 
 App.editUserAccount = function () {
-	console.log("2INIT create user account ");
-	
-	// get the values form the input elements 
 	var firstName = $("#firstName").val();	
 	var lastName = $("#lastName").val();	
 	var bio = $("#bio").val();	
@@ -373,7 +352,6 @@ App.recoverEmailSubmit = function () {
 	var email = $("#email").val();	
 	Accounts.forgotPassword({email: email}, function(error){
 		if (error) {
-			console.log(error);
 			$("#recoverEmail").button('reset');
 			if (recoverEmailError >= 1) {
 				$("#main div.alert:first").fadeOut(100).fadeIn(100);

@@ -94,10 +94,9 @@ Meteor.methods({
     	var memory = data.memory;
     	var databases = data.databases;
     	var port = data.port;
-    	var planid = data.planid;
+    	var planId = data.planId;
 
-		var child;
-		if (planid === null ||
+		if (planId === null ||
 			port == null ||
 			databases == null || 
 			memory == null ||
@@ -132,10 +131,10 @@ Meteor.methods({
     	var ccmonth = data.ccmonth;
     	var ccyear = data.ccyear;
     	var cczip = data.cczip;
-    	var planid = data.planid;
+    	var planId = data.planId;
 
-    	if (!planid) {
-			planid = 0;
+    	if (!planId) {
+			planId = 0;
 		}
 
     	Stripe.customers.create({
@@ -148,12 +147,9 @@ Meteor.methods({
 		    },
 		    email: email,
 		    description: email,
-		    plan: planid
+		    plan: planId
     	}, 
 		function(err, customer) {
-			console.log(err);
-			console.log(customer);
-
 	        if (err) {
 	            fut.ret(({_id: "0", error: 1}));
 	        } else {

@@ -7,12 +7,15 @@
 
 
 <body>
+    <div class="container">
+    <div class="row-fluid">
+
     {{> header}}
 
     <div id="wrap">
         <div class="container-fluid">
             <div class="row-fluid">
-                <div id="main" class="span8 offset2">
+                <div id="main" class="span12">
                     {{renderPage}}
                 </div>
             </div>
@@ -30,7 +33,8 @@
         </div>
     </div>
 
-
+    </div>
+    </div>
     
 </body>
 
@@ -51,7 +55,7 @@
                         <li class=""><a href="/"><img src="/img/head.png" style="height: 36px"></a></li>
                         <li class="{{ TabActive 'plans'}}"><a href="/s/plans">Plans</a></li>
                         <li class="{{ TabActive 'about'}}"><a href="/s/about">What?</a></li>
-                        <li class="{{ TabActive 'terms'}}"><a href="/s/terms">Terms</a></li>
+                        <!--<li class="{{ TabActive 'terms'}}"><a href="/s/terms">Terms</a></li>-->
                     </ul>
 
                     {{#if currentUser }}
@@ -166,38 +170,53 @@
 <!-- Static Pages -->
 <template name="home">
     <div class="jumbotron">
-        <h1>scalable redis hosting</h1>
-        <p class="lead">Worry-free redis hosting that won't break the bank.</p>
-        <a class="btn btn-large btn-success" href="/signup">Get started in 60 seconds</a>
+        <br>
+        <h1>redis hosting</h1>
+        <p class="lead">Instant redis hosting that won't break the bank. <br>Pay as you go pricing. No commitment.</p>
+        <a class="btn btn-large btn-success" href="/signup">Free 14 day trial</a>
+        <br>
+        <br>
+        <p class="lead">Now offering the largest free redis plan on the web. </p>
       </div>
       <br />
       <br />
+<hr>
 
       <div class="row-fluid">
-        <div class="span3">
+        <div class="span1"></div>
+        <div class="span5">
           <h3>Databases & Connections</h3>
           <p>We have them. <br>Unlimited with every account.</p>
         </div>
-        <div class="span3">
+        <div class="span5">
           <h3>Replication & Failover</h3>
           <p>Master-master replication & failover across zones & regions.</p>
         </div>
-        <div class="span3">
+        <div class="span1"></div>
+    </div>
+      <div class="row-fluid">
+        <div class="span1"></div>
+        <div class="span5">
           <h3>Performance & Scale</h3>
-          <p>Performance not dependent on instance size. One-click upgrade without any downtime.</p>
+          <p>Performance not dependent on instance size.<br> One-click upgrade without any downtime.</p>
         </div>        
-        <div class="span3">
+        <div class="span5">
           <h3>Backups & Restores</h3>
           <p>Instant on-demand, as well as automatic daily and monthly options. For a flat $0.25/GB.</p>
         </div>
+        <div class="span1"></div>
       </div>
-
+<hr>
 </template>
 
 <template name="about">
     <div class="content">
         <h2>What is RedisNode?</h2>
         <p>RedisNode is all about kickass redis hosting for a fraction of the cost of doing it yourself and without the headaches that come with scaling and making your installation awesome.</p>
+        <h2>How is RedisNode different?</h2>
+        <p>We offer the most competitive prices/GB and all the features that you'd expect from a production redis platform. <br>We won't nickle and dime you or throttle your connections. And all instances are on blazingly fast dedicated hardware with 10GB uplinks. Redis FTW!</p>
+        <h2>How do the plans work?</h2>
+        <p>All plans come with a 14 day free trial. That is, your card is NOT charged at all until after 14 days. You can always cancel your service and any time. There are no risks on your part, just try out the service and stick around if you like it - we're so confirent that you will that we're giving 14 day free trials</p>
     </div>
 </template>
 
