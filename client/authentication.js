@@ -119,8 +119,10 @@ App.createUserAccount = function () {
 	var lastName = $("#lastName").val();	
 	var planId = $("#plan").val();	
 
-	createUserError = App.billUser();
-
+	if (planId != 0) {
+		createUserError = App.billUser();
+	}
+	
 	Accounts.createUser({
 		username: username, 
 		password: password, 
