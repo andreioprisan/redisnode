@@ -85,44 +85,10 @@ App.signupMessages = {
 	}
 };
 
-App.billUser = function () {
-	var email = $("#email").val().toLowerCase();	
-	var firstName = $("#firstName").val();	
-	var lastName = $("#lastName").val();	
-	var planId = $("#plan").val();	
-	var ccnum = $("#creditCardNumber").val();	
-	var ccmonth = $("#ccMonth").val();	
-	var ccyear = $("#ccYear").val();	
-	var cczip = $("#zipCode").val();	
+App.createNewUserAccount = function (username, email, password, firstName, lastName, planId, customer_id ) {
+	console.log("in new user creation")
+	console.log([username, email, password, firstName, lastName, planId, customer_id]);
 
-    Meteor.call('createCustomerFromCard', firstName+" "+lastName, email, ccnum, ccmonth, ccyear, cczip, planId, 
-    	function(error, customer_id) {
-	    	if (!error) {
-				Customers.insert({plan: planId, owner: Meteor.user()._id, customer_id: customer_id});
-				Session.set('cardchargesuccess', 1);
-	    	} else {
-				Session.set('cardchargesuccess', 0);
-	    	}
-    	}
-    );
-
-
-	return 1;
-};
-
-App.createUserAccount = function () {	
-	// get the values form the input elements 
-	var username = $("#email").val().toLowerCase();
-	var email = $("#email").val().toLowerCase();	
-	var password = $("#passwordSignup").val();
-	var firstName = $("#firstName").val();	
-	var lastName = $("#lastName").val();	
-	var planId = $("#plan").val();	
-
-	if (planId != 0) {
-		createUserError = App.billUser();
-	}
-	
 	Accounts.createUser({
 		username: username, 
 		password: password, 
@@ -132,31 +98,91 @@ App.createUserAccount = function () {
 			lastName: lastName,
 			plan: planId
 		}
-	}, function(error) {
+	}, function(error, other) {
+		console.log(error);
+		console.log(other);
+		
 		if (error) {
-			//$("#signupForm div .alert").remove();
+			$('.alert.alert-error').first().remove();
 			$("#createUser").button('reset');
-			if (createUserError >= 1) {
-				$("#main div.alert:first").fadeOut(100).fadeIn(100);
-			} else {
-				$("form#signupForm").before("<div class='alert alert-error'>" + error.reason + "</div>");
-				createUserError = 1;
-			}
+			$("form#signupForm").before("<div class='alert alert-error'>" + error.reason + "</div>");
 		} else {
-			if (!planId) {
-				planId = 0;
-			}
 			var plan = Plans.find({id: parseInt(planId)}).fetch();
 			var port = Math.floor(Math.random()*60000 + 1024);
 			var password = Meteor.uuid().replace(/-/g, '');
-		    Meteor.call('provision', parseInt(planId), port, plan[0].dbs, plan[0].mb, plan[0].conn, password, function() {});
-			Instances.insert({plan: planId, port: port, password: password, owner: Meteor.user()._id});
-			//this.userId
 
-			Meteor.Router.to("/users/"+Meteor.user()._id+"");
+			var dataBlob = { 
+				planId: parseInt(planId), 
+				port:port, 
+				databases: plan[0].dbs, 
+				memory: plan[0].mb, 
+				connections: plan[0].conn, 
+				password: password};
+
+		    Meteor.call('provision', dataBlob, function(err, res) {
+		    	console.log("provision err:"+err);
+		    	console.log("provision res:"+res);
+
+			    console.log({plan: planId, port: port, password: password, owner: Meteor.user()._id});
+
+				Instances.insert({plan: planId, port: port, password: password, owner: Meteor.user()._id});
+
+				if (customer_id != null) {
+					Customers.insert({plan: planId, owner: Meteor.user()._id, customer_id: customer_id});
+				}
+
+				Meteor.Router.to("/users/"+Meteor.user()._id+"");
+
+		    });
 		}
 	});
-	
+}
+
+App.createUserAccount = function () {	
+	email = $("#email").val().toLowerCase();	
+	username = $("#email").val().toLowerCase();
+	firstName = $("#firstName").val();	
+	lastName = $("#lastName").val();	
+	password = $("#passwordSignup").val();	
+	planId = $("#plan").val();
+	ccnum = $("#creditCardNumber").val();	
+	ccmonth = $("#ccMonth").val();	
+	ccyear = $("#ccYear").val();	
+	cczip = $("#zipCode").val();	
+	name = firstName+" "+lastName;
+	console.log("App.billUser");
+	//return false;
+
+	if (planId != 0 && $("#creditCardNumber")) {
+		var dataBlob = { 
+			name: name, 
+			email: email, 
+			ccnum: ccnum, 
+			ccmonth: ccmonth, 
+			ccyear: ccyear, 
+			cczip: cczip,
+			planId: planId };
+
+	    Meteor.call('createCustomerFromCard', dataBlob, function(error, stripe_response) {
+    		console.log("createCustomerFromCard client");
+    		console.log(error);
+    		console.log(stripe_response);
+
+	    	if (!stripe_response.error) {
+				Session.set('cardchargesuccess', 1);
+	    		App.createNewUserAccount(username, email, password, firstName, lastName, planId, stripe_response._id);
+	    	} else {
+				$('.alert.alert-error').first().remove();
+				$("#createUser").button('reset');
+				$("form#signupForm").before("<div class='alert alert-error'>Your card could not be charged. Please try again</div>");
+
+				Session.set('cardchargesuccess', 0);
+	    	}
+    	}
+	    );
+	} else {
+		App.createNewUserAccount(username, email, password, firstName, lastName, planId, null );
+	}
 };
 
 App.signupForm = "#signupForm";

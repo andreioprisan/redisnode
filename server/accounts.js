@@ -87,28 +87,56 @@ Accounts.onCreateUser(function (options, user) {
 	return user;
 });
 
-var sys = Npm.require('sys');
-var exec = Npm.require('child_process').exec;
-
 Meteor.methods({
-    'provision': function provisionRedisContainer(planid, port, databases, memory, connections, password) {
+    provision: function (data) {
+    	var password = data.password;
+    	var connections = data.connections;
+    	var memory = data.memory;
+    	var databases = data.databases;
+    	var port = data.port;
+    	var planid = data.planid;
+
 		var child;
+		if (planid === null ||
+			port == null ||
+			databases == null || 
+			memory == null ||
+			connections == null ||
+			password == null) {
+			return {_id: null};
+		}
 
-		var provCommand = "/etc/init.d/redis -p "+port+" -d "+databases+" -m "+memory+"mb -c "+connections+" -x "+password+" -a create && /etc/init.d/redis -p "+port+" -a start";
-		child = exec(provCommand, function (error, stdout, stderr) {
-		    sys.print('stdout: ' + stdout);
-		    sys.print('stderr: ' + stderr);
-		    if (error !== null) {
-		        console.log('exec error: ' + error);
-		    } else {
-		    }
-		});
+		var sys = Npm.require('sys');
+		var exec = Npm.require('child_process').exec;
+		var provCommand = "sudo /etc/init.d/redis -p "+port+" -d "+databases+" -m "+memory+"mb -c "+connections+" -x "+password+" -a create && /etc/init.d/redis -p "+port+" -a start";
+		sys.print("will run:"+provCommand);
 
-		return child;
+		function puts(error, stdout, stderr) { 
+			sys.print('stdout: ' + stdout);
+			sys.print('stderr: ' + stderr);
+			if (error !== null) {
+				console.log('exec error: ' + error);
+			} else {
+
+			}
+		}
+		exec(provCommand, puts);
     },
-    'createCustomerFromCard': function createCustomerFromCard(name, email, ccnum, ccmonth, ccyear, cczip, planid) {
+    createCustomerFromCard: function (data) {
 		var Future = Npm.require('fibers/future');
 		var fut = new Future();
+
+    	var name = data.name;
+    	var email = data.email;
+    	var ccnum = data.ccnum;
+    	var ccmonth = data.ccmonth;
+    	var ccyear = data.ccyear;
+    	var cczip = data.cczip;
+    	var planid = data.planid;
+
+    	if (!planid) {
+			planid = 0;
+		}
 
     	Stripe.customers.create({
     		card: {
@@ -123,15 +151,18 @@ Meteor.methods({
 		    plan: planid
     	}, 
 		function(err, customer) {
+			console.log(err);
+			console.log(customer);
+
 	        if (err) {
-	            console.log(err);
-	            fut.ret;
+	            fut.ret(({_id: "0", error: 1}));
 	        } else {
-		        fut.ret(customer.id);
+		        fut.ret({_id: customer.id, error: 0});
 		    }
 	    });
 
 	    return fut.wait();
+	    
     }
   });
 
