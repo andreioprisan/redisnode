@@ -98,6 +98,8 @@ Meteor.methods({
 		return child;
     },
     'createCustomerFromCard': function createCustomerFromCard(name, email, ccnum, ccmonth, ccyear, cczip, planid) {
+    	console.log([name, email, ccnum, ccmonth, ccyear, cczip, planid]);
+
     	Stripe.customer.create({
     		card: {
 		        number: ccnum,
