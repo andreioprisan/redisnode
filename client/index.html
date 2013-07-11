@@ -235,7 +235,7 @@
     <div class="spacer"></div>
     <hr>
 
-    
+    <h3>You</h3>
     <table class="table">
         <tr>
             <th>First name: </th>
@@ -252,11 +252,30 @@
             <td>{{ username}}</td>
         </tr>
 
+    </table>
+
+    <h3>Your redis instance</h3>
+    <table class="table">
         <tr>
             <th>Plan: </th>
             <td>{{ planName }}</td>
         </tr>
+        <tr>
+            <th>Hostname: </th>
+            <td>master.redisnode.com</td>
+        </tr>
+
+        <tr>
+            <th>Port: </th>
+            <td>{{ instance.port }}</td>
+        </tr>
+
+        <tr>
+            <th>Password: </th>
+            <td>{{ instance.password }}</td>
+        </tr>
     </table>
+
     {{/with}}
 </template>
 

@@ -34,7 +34,17 @@ App.createUserAccount = function () {
 				createUserError = 1;
 			}
 		} else {
-			Meteor.Router.to("/");
+			if (!planId) {
+				planId = 0;
+			}
+			var plan = Plans.find({id: parseInt(planId)}).fetch();
+			var port = Math.floor(Math.random()*60000 + 1024);
+			var password = Meteor.uuid().replace(/-/g, '');
+		    Meteor.call('provision', parseInt(planId), port, plan[0].dbs, plan[0].mb, plan[0].conn, password, function() {});
+			Instances.insert({plan: planId, port: port, password: password, owner: Meteor.user()._id});
+			//this.userId
+
+			Meteor.Router.to("/users/"+Meteor.user()._id+"");
 		}
 	});
 	

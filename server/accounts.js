@@ -64,3 +64,24 @@ Accounts.onCreateUser(function (options, user) {
 	return user;
 });
 
+var sys = Npm.require('sys');
+var exec = Npm.require('child_process').exec;
+
+Meteor.methods({
+    'provision': function provisionRedisContainer(planid, port, databases, memory, connections, password) {
+		var child;
+
+		var provCommand = "/etc/init.d/redis -p "+port+" -d "+databases+" -m "+memory+" -c "+connections+" -x "+password+" -a create && /etc/init.d/redis -p "+port+" -a start";
+		child = exec(provCommand, function (error, stdout, stderr) {
+		    sys.print('stdout: ' + stdout);
+		    sys.print('stderr: ' + stderr);
+		    if (error !== null) {
+		        console.log('exec error: ' + error);
+		    } else {
+		    }
+		});
+
+		return child;
+    }
+  });
+

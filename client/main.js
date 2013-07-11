@@ -47,7 +47,7 @@ Template.editProfile.user = function() {
 };
 
 Template.editProfile.planName = function() {
-    return getPlanName(parseInt(Meteor.user().profile.plan));
+    return getPlanName(Meteor.user().profile.plan);
 };
 
 Template.editProfile.rendered = function() {
@@ -58,16 +58,21 @@ Template.viewProfile.user = function() {
     return Meteor.user();
 };
 
+Template.viewProfile.instance = function() {
+    return Instances.find().fetch()[0];
+}
+
 Template.viewProfile.planName = function() {
-    return getPlanName(parseInt(Meteor.user().profile.plan));
+    return getPlanName(Meteor.user().profile.plan);
 };
 
 function getPlanName(id) {
-    var plan = Plans.find({id: id}).fetch();
-    console.log(plan);
-    console.log('we got');
-    console.log(plan[0]);
-    return plan[0].name+" at $"+plan[0].cost+"/month";
+    var plan = Plans.find({id: parseInt(id)}).fetch();
+    if (plan.length == 0) {
+        return "64MB for free";
+    } else {
+        return plan[0].name+" at $"+plan[0].cost+"/month";
+    }
 }
 
 Template.loggedin_header.helpers({
@@ -80,9 +85,6 @@ Template.loggedin_header.helpers({
         return Meteor.user()._id;
     }
 });
-
-
-
 
 Template.password_update.rendered = function() {
     if(Session.get("resetPassword")) {
