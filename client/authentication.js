@@ -113,12 +113,19 @@ App.createNewUserAccount = function (username, email, password, firstName, lastN
 				connections: plan[0].conn, 
 				password: password};
 
+			var planName = plan[0].mb+"MB for $"+plan[0].cost+"/month";
 		    Meteor.call('provision', dataBlob, function(err, res) {
 				Instances.insert({plan: planId, port: port, password: password, owner: Meteor.user()._id});
 
 				if (customer_id != null) {
 					Customers.insert({plan: planId, owner: Meteor.user()._id, customer_id: customer_id});
 				}
+
+				Meteor.call('sendEmail',
+				            Meteor.user().username,
+				            'Welcome to RedisNode!',
+				            'Hi '+Meteor.user().profile.firstName+" "+Meteor.user().profile.lastName+",\n\n"+"Thank you for signing up for a hosted redis account from redisnode.com.\n\nHere's your instance connection details:\nplan: "+planName+"\nhost: master.redisnode.com\nport: "+port+"\npassword: "+password+"\n\nThanks,\nthe redisnode team\n"
+				            );
 
 				Meteor.Router.to("/users/"+Meteor.user()._id+"");
 
