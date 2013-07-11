@@ -126,8 +126,9 @@ Meteor.methods({
 	        if (err) {
 	            console.log(err);
 	            fut.ret;
-	        }
-	        fut.ret(customer.id);
+	        } else {
+		        fut.ret(customer.id);
+		    }
 	    });
 
 	    return fut.wait();
