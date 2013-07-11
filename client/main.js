@@ -1,4 +1,8 @@
 var App = window.App || {};
+Plans = new Meteor.Collection("Plans");
+Meteor.subscribe("Plans");
+Instances = new Meteor.Collection("Instances");
+Meteor.subscribe("Instances");
 
 // Add 'active' class to current page link
 Handlebars.registerHelper('TabActive', function (route) {
@@ -42,6 +46,10 @@ Template.editProfile.user = function() {
     return Meteor.user();
 };
 
+Template.editProfile.planName = function() {
+    return getPlanName(parseInt(Meteor.user().profile.plan));
+};
+
 Template.editProfile.rendered = function() {
     App.myValidation (App.editProfileRules, App.editProfileMessages, App.editProfileForm, App.messagePlacement, App.editProfileHandleSubmit);
 };
@@ -49,6 +57,18 @@ Template.editProfile.rendered = function() {
 Template.viewProfile.user = function() {
     return Meteor.user();
 };
+
+Template.viewProfile.planName = function() {
+    return getPlanName(parseInt(Meteor.user().profile.plan));
+};
+
+function getPlanName(id) {
+    var plan = Plans.find({id: id}).fetch();
+    console.log(plan);
+    console.log('we got');
+    console.log(plan[0]);
+    return plan[0].name+" at $"+plan[0].cost+"/month";
+}
 
 Template.loggedin_header.helpers({
     fullName: function() {

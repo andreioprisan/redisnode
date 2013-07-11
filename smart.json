@@ -1,6 +1,8 @@
 {
   "packages": {
     "router": {},
-    "font-awesome": {}
+    "font-awesome": {},
+    "npm": {},
+    "HTML5-History-API": {}
   }
 }

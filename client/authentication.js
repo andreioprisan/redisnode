@@ -5,18 +5,14 @@ var LoginErr, createUserError, recoverEmailError, passwordUpdateError;
 /*==========  SIGNUP  ==========*/
 
 
-App.createUserAccount = function () {
-	console.log("1INIT create user account ");
-	
+App.createUserAccount = function () {	
 	// get the values form the input elements 
-	var username = $("#usernameSignup").val().toLowerCase();
+	var username = $("#email").val().toLowerCase();
 	var email = $("#email").val().toLowerCase();	
 	var password = $("#passwordSignup").val();
 	var firstName = $("#firstName").val();	
 	var lastName = $("#lastName").val();	
-
-	console.log("about to create user");
-	console.log([username, password, email, firstName, lastName]);
+	var planId = $("#plan").val();	
 
 	Accounts.createUser({
 		username: username, 
@@ -25,11 +21,10 @@ App.createUserAccount = function () {
 		profile: {
 			firstName: firstName, 
 			lastName: lastName,
-			name: firstName+" "+lastName
+			plan: planId
 		}
 	}, function(error) {
 		if (error) {
-			console.log("we got an error:"+error);
 			//$("#signupForm div .alert").remove();
 			$("#createUser").button('reset');
 			if (createUserError >= 1) {
@@ -51,7 +46,7 @@ App.signupRules = {
 		usernameSignup: {
 			required: true,
 			alphanumeric: true,
-			minlength: 2
+			minlength: 6
 		},
 		email: {
 			required: true,
@@ -63,8 +58,8 @@ App.signupRules = {
 		password_againSignup: {
 			required: true,
 			equalTo: "#passwordSignup",
-			minlength: 3,
-			maxlength: 12
+			minlength: 6,
+			maxlength: 50
 		},
 		firstName: {
 			required: true,
@@ -114,21 +109,19 @@ App.signupForm = "#signupForm";
 
 App.messagePlacement = {
 	onkeyup: false,
-	debug: true,
+	debug: false,
 	errorElement: "div",
 	success: function(label) {
 		label.html("<strong>Ok!</strong>");
-		label.parent("div.alert").removeClass("alert-info alert-error").addClass("alert-success");
+		label.parent("div.alert").removeClass("alert-info alert-error").addClass("alert-success").addClass("hide");
 	},
 	errorPlacement: function(error, element) {
-		console.log("error");
-		console.log(element.parent().children("div.alert").length);
 		if (element.parent().children("div.alert").length < 1) {
 			var help_block = element.parent().children("div.help-block");
 			if(help_block.length < 1) {
-				element.parent().append("<div class='alert alert-error'>&nbsp;</div>");
+				element.parent().append("<div class='alert alert-error hide'></div>");
 			} else {
-				help_block.removeClass("help-block muted").addClass("alert alert-error");
+				help_block.removeClass("help-block muted").removeClass("hide").addClass("alert alert-error");
 			}
 			element.next("div.alert").html(error);
 		} else {
@@ -136,7 +129,7 @@ App.messagePlacement = {
 		}
 	},
 	highlight: function(element, errorClass, validClass) {
-		$(element).next("div.alert").removeClass("alert-info alert-success").addClass("alert-error");
+		$(element).next("div.alert").removeClass("alert-info alert-success").addClass("alert-error").removeClass("hide");
 	},
 	unhighlight: function(element, errorClass, validClass) {
 		$(element).next("div.alert").removeClass("alert-error alert-info").addClass("alert-success");
@@ -165,7 +158,7 @@ App.login = function () {
 				$("#main div.alert").fadeOut(100).fadeIn(100);
 				LoginErr = LoginErr + 1;
 			} else {
-				$("form#loginForm").before("<div class='alert alert-error'>Wrong username or password!</div>");
+				$("form#loginForm").before("<div class='alert alert-error'>Incorrect username and password combination!</div>");
 				LoginErr = 1;
 			}
 
@@ -200,13 +193,13 @@ App.loginRules = {
 App.loginMessages = {
 	messages: {
 		usernameLogin: {
-			required: "<strong>Note!</strong> required",
-			alphanumeric: "Must be alphanumerical",
-			minlength: "must be at least 2 chars"
+			required: "<strong>required</strong>",
+			alphanumeric: "Please use only digits and letters!",
+			minlength: "Must be at least 6 characters long"
 		}, 
 		passwordLogin: {
-			required: "<strong>Note!</strong> required",
-			minlength: "Must be at least 2 chars"
+			required: "<strong>required</strong>",
+			minlength: "Must be at least 6 characters long"
 		}
 	}
 };
@@ -267,13 +260,13 @@ App.editProfileMessages = {
 	messages: {
 		firstName: {
 			required: "What is your first name?",
-			minlength: "At least 3 chars!",
-			maxlength: "no longer then 50 chars!"
+			minlength: "Your name must be least 3 characters long!",
+			maxlength: "Your name can be no longer than 50 chars!"
 		},
 		lastName: {
 			required: "What is your last name?",
-			minlength: "At least 3 chars!",
-			maxlength: "no longer then 50 chars!"
+			minlength: "Your name must be least 3 characters long!",
+			maxlength: "Your name can be no longer than 50 chars!"
 		}
 	}
 };
@@ -329,8 +322,8 @@ App.recoverEmailRules = {
 App.recoverEmailMessages = {
 	messages: {
 		email: {
-			required: "We need your email adress to contact you",
-			email: "Your email must be in the format of name@domain.com"
+			required: "We need your email adress",
+			email: "Your email must be of the format name@domain.com"
 		}
 	}
 };
@@ -355,10 +348,8 @@ App.passwordUpdateSubmit = function () {
 	var password = $("#passwordUpdate").val();	
 	Accounts.resetPassword(Session.get('resetPassword'), password, function(error){
 		if (error) {
-			console.log(error);
 			$("#passwordUpdateBtn").button('reset');
 			if (passwordUpdateError >= 1) {
-				console.log("Length", $("#main div.alert:first").length);
 				$("#main div.alert:first").fadeOut(100).fadeIn(100);
 			} else {
 				$("form#passwordUpdateForm").before("<div class='alert alert-error'>" + error.reason + "</div>");
@@ -377,13 +368,13 @@ App.passwordUpdateRules = {
 		passwordUpdate: {
 			required: true,
 			minlength: 3,
-			maxlength: 12
+			maxlength: 50
 		},
 		password_againUpdate: {
 			required: true,
 			equalTo: "#passwordUpdate",
 			minlength: 3,
-			maxlength: 12
+			maxlength: 50
 		},
 	}
 };
@@ -393,15 +384,14 @@ App.passwordUpdateMessages = {
 	messages: {
 		passwordUpdate: {
 			required: "Please enter a valid password",
-			minlength: "At least 3 chars!",
-			maxlength: "No longer then 12 chars!"
-
+			minlength: "Your password must be least 3 characters long!",
+			maxlength: "Your password can be no longer than 50 chars!"
 		},
 		password_againUpdate: {
-			required: "Retype your password",
-			equalTo: "The passwords have to match",
-			minlength: "At least 3 chars!",
-			maxlength: "No longer then 12 chars!"
+			required: "Please confirm your password",
+			equalTo: "Your passwords do not match! Please try again",
+			minlength: "Your password must be least 3 characters long!",
+			maxlength: "Your password can be no longer than 50 chars!"
 		}
 	}
 };
@@ -412,7 +402,6 @@ App.passwordUpdateForm = "#passwordUpdateForm";
 App.passwordUpdateHandleSubmit = {
 	submitHandler: function () {
 		$("#passwordUpdateBtn").button('loading');
-		console.log("calling update...")
 		App.passwordUpdateSubmit();
 		return false;
 	}

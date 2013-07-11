@@ -225,10 +225,10 @@
 
     <div class="row-fluid">
         <div class="span10">
-            <h3>Your Profile</h3>
+            <h3>Account Details</h3>
         </div>
         <div class="span2 pull-right action">
-            <a href="/users/{{_id}}/edit" class='btn btn-primary btn-block'>Edit Profile</a>
+            <a href="/users/{{_id}}/edit" class='btn btn-primary btn-block'>Modify</a>
         </div>
     </div>
 
@@ -253,8 +253,8 @@
         </tr>
 
         <tr>
-            <th>Bio: </th>
-            <td>{{ profile.bio}}</td>
+            <th>Plan: </th>
+            <td>{{ planName }}</td>
         </tr>
     </table>
     {{/with}}
@@ -266,10 +266,10 @@
 
     <div class="row-fluid">
         <div class="span10">
-            <h3>Edit Profile</h3>
+            <h3>Account Details</h3>
         </div>
         <div class="span2 pull-right action">
-            <a href="/users/{{_id}}" class='btn btn-primary btn-block'>View Profile</a>
+            <a href="/users/{{_id}}" class='btn btn-primary btn-block'>Modify</a>
         </div>
     </div>
 
@@ -282,8 +282,7 @@
             
             <div class="controls">
                 <label>First name</label>
-                <input id="firstName" class="span12" name="firstName" type="text" value="{{profile.firstName}}">
-                <div class="help-block muted">Must be alphanumerical at least 3 characters and no longer then 50</div>
+                <input id="firstName" class="span12" name="firstName" type="text" value="{{profile.firstName}}" placeholder="first name">
             </div>
         </div>
 
@@ -292,22 +291,20 @@
             <div class="controls">
                 <label>Last name</label>
                 <input id="lastName" class="span12" name="lastName" type="text" value="{{profile.lastName}}">
-                <div class="help-block muted">Must be alphanumerical at least 3 characters and no longer then 50</div>
             </div>
         </div>
 
         <div class="control-group">
             <div class="controls">
-                <label>Bio</label>
-                <textarea class="span12" id="bio" name="bio" placeholder="Bio">{{profile.bio}}</textarea>
-                <div class="help-block muted">Tell us about yourself.</div>
+                <label>Plan</label>
+                <input disabled class="span12" id="bio" name="bio" placeholder="plan name" value="{{planName}}">
             </div>
         </div>
 
 
         <div class="control-group">
             <div class="controls">
-                <button type="submit" id="saveEdit" data-loading-text="Updating user..." class="btn btn-success btn-large">Update Profile</button>
+                <button type="submit" id="saveEdit" data-loading-text="Updating" class="btn btn-success btn-large">Save</button>
             </div>
         </div>
     </form>
@@ -349,46 +346,45 @@
 <!-- Signup -->
 <template name="signup">
     <h3>
-        Create a new account
+        Signup for a new account
         <p class="pull-right"><small>Already have an account? <a href="/login">Login</a></small></p>
     </h3>
     
     <hr>
 
-    <form id="signupForm" name="signupForm" method="post">
+    <form id="signupForm" name="signupForm" method="post">        
+        <h3>Personal Information</h3>
         <div class="control-group">
-            <div class="controls">  
-                <input class="span12" id="usernameSignup" name="usernameSignup" type="text" placeholder="Choose a username">
-                <div class="help-block muted">Must be alphanumerical at least 3 characters and no longer then 9</div>
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <div class="controls">
-                <input class="span12" id="email" name="email" type="email" placeholder="Your email">
-                <div class="help-block muted">An email confirmation will be sent</div>
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <div class="controls">
-                <input id="passwordSignup" name="passwordSignup" class="span6" type="password" placeholder="Password">
-                <input id="password_againSignup" name="password_againSignup" class="span6" type="password" placeholder="Retype your password">
-
-                <div class="help-block muted">Make sure you type your password correctly</div>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="controls">
+            <div class="controls span12">
                 <input id="firstName" name="firstName" class="span6" type="text" placeholder="First Name">
                 <input id="lastName" name="lastName" class="span6" type="text" placeholder="Last Name">
-
-                <div class="help-block muted">Tell us your full name</div>
             </div>
         </div>
-        
-        <button class="btn btn-success btn-large pull-right" type="submit" id="createUser" data-loading-text="Creating user...">Create Your Account</button>
+        <div class="control-group">
+            <div class="controls span12">
+                <input class="span6" id="email" name="email" type="email" placeholder="Email Address">
+                <input id="passwordSignup" name="passwordSignup" class="span3" type="password" placeholder="Password">
+                <input id="password_againSignup" name="password_againSignup" class="span3" type="password" placeholder="Confirm Password">
+            </div>
+        </div>   
+        <h3>Select your Plan</h3>
+        <div class="control-group">
+            <div class="controls span12">
+                <select name="plan" id="plan" class="span6">
+                  <option value="0">64MB - free</option>
+                  <option value="1">512MB - $5/month</option>
+                  <option value="2">1GB - $10/months</option>
+                  <option value="3">2GB - $20/month</option>
+                  <option value="4">4GB - $32/month</option>
+                  <option value="5">8GB - $64/month</option>
+                  <option value="6">16GB - $128/month</option>
+                  <option value="7">32GB - $256/month</option>
+                </select>
+            </div>
+        </div>
+
+
+        <button class="btn btn-success btn-large pull-right" type="submit" id="createUser" data-loading-text="Creating your account">Create Account</button>
     </form>
 
 </template>
