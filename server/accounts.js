@@ -3,6 +3,7 @@ Meteor.startup(function () {
 
 	Plans = new Meteor.Collection("Plans");
 	Instances = new Meteor.Collection("Instances");
+	Customers = new Meteor.Collection("Customers");
 
 	Plans.remove({});
 
@@ -29,6 +30,19 @@ Meteor.startup(function () {
 	Meteor.publish("Instances", function () {
 	  return Instances.find({owner: this.userId});
 	});
+
+	var isProd = 0;
+	if (!isProd) {
+		var stripe_secret = "sk_test_2cGa3day3OCg1ZVTPFPuRetY";
+		var stripe_public = "pk_test_ujzLsEV3pNMBj9KIv5qkknUC";		
+	} else {
+		var stripe_secret = "sk_live_UEu9EQkB1BdOUOBrzYcXudBG";
+		var stripe_public = "pk_live_voZnzGKwR0aIZ3TjXd0vQhof";
+	}
+
+	Meteor.publish("stripe_public", function() { return stripe_public; });
+
+	var Stripe = StripeAPI(stripe_secret);
 
 });
 
@@ -82,6 +96,22 @@ Meteor.methods({
 		});
 
 		return child;
+    },
+    'createCustomerFromCard': function createCustomerFromCard(name, email, ccnum, ccmonth, ccyear, cczip, planid) {
+    	Stripe.customer.create({
+    		card: {
+		        number: ccnum,
+		        exp_month: ccmonth,
+		        exp_year: ccyear,
+		        name: name,
+		        address_zip: cczip		        
+		    },
+		    email: email,
+		    description: email,
+		    plan: planid
+    	}, function (err, res) {
+		    console.log(err, res);
+		});
     }
   });
 

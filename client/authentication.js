@@ -5,6 +5,102 @@ var LoginErr, createUserError, recoverEmailError, passwordUpdateError;
 /*==========  SIGNUP  ==========*/
 
 
+App.signupRules = {
+	rules: {
+		usernameSignup: {
+			required: true,
+			alphanumeric: true,
+			minlength: 6
+		},
+		email: {
+			required: true,
+			email: true
+		},
+		passwordSignup: {
+			required: true
+		},
+		password_againSignup: {
+			required: true,
+			equalTo: "#passwordSignup",
+			minlength: 6,
+			maxlength: 50
+		},
+		firstName: {
+			required: true,
+			minlength: 3,
+			maxlength: 50
+		},
+		lastName: {
+			required: true,
+			minlength: 3,
+			maxlength: 50
+		},
+		creditCardNumber: {
+			required: true,
+			minlength: 10,
+			maxlength: 30
+		},
+		zipCode: {
+			required: true,
+			minlength: 3,
+			maxlength: 20
+		},		
+	}
+};
+
+
+App.signupMessages = {
+	messages: {
+		usernameSignup: {
+			required: "<strong>Note!</strong> required *",
+			alphanumeric: "Must be alphanumerical",
+			minlength: "must be at least 2 chars"
+		},
+		email: {
+			required: "We need your email adress to contact you",
+			email: "Your email must be in the format of name@domain.com"
+		},
+		password_againSignup: {
+			required: "Retype your password",
+			equalTo: "The passwords have to match",
+			minlength: "At least 3 chars!",
+			maxlength: "No longer then 12 chars!"
+		},
+		firstName: {
+			required: "What is your first name?",
+			minlength: "At least 3 chars!",
+			maxlength: "no longer then 50 chars!"
+		},
+		lastName: {
+			required: "What is your last name?",
+			minlength: "At least 3 chars!",
+			maxlength: "no longer then 50 chars!"
+		},
+		creditCardNumber: {
+			required: "Please enter a valid credit card number",
+		},
+		zipCode: {
+			required: "Please enter your billing zip code",
+		},			
+	}
+};
+
+App.billUser = function () {
+	var email = $("#email").val().toLowerCase();	
+	var firstName = $("#firstName").val();	
+	var lastName = $("#lastName").val();	
+	var planId = $("#plan").val();	
+	var ccnum = $("#creditCardNumber").val();	
+	var ccmonth = $("#ccMonth").val();	
+	var ccyear = $("#ccYear").val();	
+	var zip = $("#zipCode").val();	
+
+    Meteor.call('createCustomerFromCard', firstName+" "+lastName, email, ccnum, ccmonth, ccyear, cczip, planId, function() {});
+
+
+	return 1;
+};
+
 App.createUserAccount = function () {	
 	// get the values form the input elements 
 	var username = $("#email").val().toLowerCase();
@@ -13,6 +109,8 @@ App.createUserAccount = function () {
 	var firstName = $("#firstName").val();	
 	var lastName = $("#lastName").val();	
 	var planId = $("#plan").val();	
+
+	createUserError = App.billUser();
 
 	Accounts.createUser({
 		username: username, 
@@ -48,71 +146,6 @@ App.createUserAccount = function () {
 		}
 	});
 	
-};
-
-
-App.signupRules = {
-	rules: {
-		usernameSignup: {
-			required: true,
-			alphanumeric: true,
-			minlength: 6
-		},
-		email: {
-			required: true,
-			email: true
-		},
-		passwordSignup: {
-			required: true
-		},
-		password_againSignup: {
-			required: true,
-			equalTo: "#passwordSignup",
-			minlength: 6,
-			maxlength: 50
-		},
-		firstName: {
-			required: true,
-			minlength: 3,
-			maxlength: 50
-		},
-		lastName: {
-			required: true,
-			minlength: 3,
-			maxlength: 50
-		},
-	}
-};
-
-
-App.signupMessages = {
-	messages: {
-		usernameSignup: {
-			required: "<strong>Note!</strong> required *",
-			alphanumeric: "Must be alphanumerical",
-			minlength: "must be at least 2 chars"
-		},
-		email: {
-			required: "We need your email adress to contact you",
-			email: "Your email must be in the format of name@domain.com"
-		},
-		password_againSignup: {
-			required: "Retype your password",
-			equalTo: "The passwords have to match",
-			minlength: "At least 3 chars!",
-			maxlength: "No longer then 12 chars!"
-		},
-		firstName: {
-			required: "What is your first name?",
-			minlength: "At least 3 chars!",
-			maxlength: "no longer then 50 chars!"
-		},
-		lastName: {
-			required: "What is your last name?",
-			minlength: "At least 3 chars!",
-			maxlength: "no longer then 50 chars!"
-		}
-	}
 };
 
 App.signupForm = "#signupForm";

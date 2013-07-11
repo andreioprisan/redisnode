@@ -4,12 +4,19 @@ Meteor.subscribe("Plans");
 Instances = new Meteor.Collection("Instances");
 Meteor.subscribe("Instances");
 
+Meteor.subscribe("stripe_public");
+var isProd = 0;
+if (!isProd) {
+    var stripe_public = "pk_test_ujzLsEV3pNMBj9KIv5qkknUC";     
+} else {
+    var stripe_public = "pk_live_voZnzGKwR0aIZ3TjXd0vQhof";
+}
+Stripe.setPublishableKey(stripe_public);
+
 // Add 'active' class to current page link
 Handlebars.registerHelper('TabActive', function (route) {
     return (route == Session.get("current_page")) ? "active" : "";
 });
-
-
 
 
 // Login
@@ -38,8 +45,19 @@ Template.signup.rendered = function() {
     App.myValidation (App.signupRules, App.signupMessages, App.signupForm, App.messagePlacement, App.signupHandleSubmit);
 };
 
+Template.signup.events({
+    "change #plan": function(event){
+        if(event.srcElement.value != 0) {
+            $('#paymentInfo').show();
+        } else {
+            $('#paymentInfo').hide();
+        }
+    }
+});
 
-
+function showPaymentFields() {
+    $('#paymentInfo').show();
+}
 
 // Logged in views
 Template.editProfile.user = function() {
