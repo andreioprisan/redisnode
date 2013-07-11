@@ -7,7 +7,7 @@ Meteor.subscribe("Instances");
 Customers = new Meteor.Collection("Customers");
 Meteor.subscribe("Customers");
 
-if (window.location.hostname == "redisnode.com") {
+if (window.location.hostname == "redisnode.com" || window.location.hostname == "www.redisnode.com") {
     isProd = 1;
 } else {
     isProd = 0;
