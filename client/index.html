@@ -375,7 +375,7 @@
             </div>
         </div>
 
-        <button id="login" class="btn btn-success btn-large pull-right" type="submit" data-loading-text="Signing in...">Sign In</button>
+        <button id="login" class="btn btn-success btn-large pull-right" type="submit" data-loading-text="Signing In">Sign In</button>
     </form>
 
 </template>
@@ -425,7 +425,7 @@
                 </select>
             </div>
         </div>
-        <div id="paymentInfo" class="hide">
+        <div id="paymentInfo" class="{{ show_signup_plan_payment_section }}">
         <h3>Payment Information</h3>
         <div class="control-group">
             <div class="controls span12">
@@ -476,7 +476,7 @@
     <form id="recoverEmailForm">
 
         <h3>
-            Enter your email ID
+            Enter your email
         </h3>
         <hr>
         

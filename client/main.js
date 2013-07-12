@@ -47,6 +47,10 @@ Template.signup.plan = function() {
     if (plan == undefined) {
         plan = 0;
     }
+
+    if (plan > 0) {
+        $('#paymentInfo').show();
+    }
 };
 
 Handlebars.registerHelper('signup_plan', function (route) {
@@ -58,6 +62,14 @@ Handlebars.registerHelper('signup_plan', function (route) {
     return (route == plan) ? "selected" : "";
 });
 
+Handlebars.registerHelper('show_signup_plan_payment_section', function (route) {
+    var plan = Session.get("signup_plan");
+    if (plan == undefined) {
+        plan = 0;
+    }
+
+    return (plan) ? "" : "hide";
+});
 function showPaymentFields() {
     $('#paymentInfo').show();
 }
