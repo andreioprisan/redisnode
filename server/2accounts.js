@@ -69,6 +69,7 @@ Meteor.methods({
 			planId = 0;
 		}
 
+		console.log('called server side Stripe.customers.create');
     	Stripe.customers.create({
     		card: {
 		        number: ccnum,
