@@ -8,3 +8,4 @@ accounts-base
 accounts-password
 bootstrap
 force-ssl
+preserve-inputs

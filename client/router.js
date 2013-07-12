@@ -14,7 +14,17 @@ Meteor.Router.add({
         return 'login';
     },
 
-    '/signup': function() {
+    '/signup/:plan': function(plan) {
+        if (page == undefined) {
+            plan = 0;
+        }
+        Session.set("signup_plan", plan);
+        Session.set("current_page", 'signup');
+        return 'signup';
+    },
+
+    '/signup': function(plan) {
+        Session.set("signup_plan", 0);
         Session.set("current_page", 'signup');
         return 'signup';
     },

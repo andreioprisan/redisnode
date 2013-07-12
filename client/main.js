@@ -42,6 +42,22 @@ Template.signup.events({
     }
 });
 
+Template.signup.plan = function() {
+    var plan = Session.get("signup_plan");
+    if (plan == undefined) {
+        plan = 0;
+    }
+};
+
+Handlebars.registerHelper('signup_plan', function (route) {
+    var plan = Session.get("signup_plan");
+    if (plan == undefined) {
+        plan = 0;
+    }
+
+    return (route == plan) ? "selected" : "";
+});
+
 function showPaymentFields() {
     $('#paymentInfo').show();
 }

@@ -54,7 +54,7 @@
                     <ul class="nav">
                         <li class=""><a href="/"><img src="/img/head.png" style="height: 36px"></a></li>
                         <li class="{{ TabActive 'plans'}}"><a href="/s/plans">Plans</a></li>
-                        <li class="{{ TabActive 'about'}}"><a href="/s/about">What?</a></li>
+                        <li class="{{ TabActive 'about'}}"><a href="/s/about">FAQ</a></li>
                         <!--<li class="{{ TabActive 'terms'}}"><a href="/s/terms">Terms</a></li>-->
                     </ul>
 
@@ -107,29 +107,29 @@
                     <tr>
                         <td>Connections</td>
                         <td>1024</td>
-                        <td>Unlimited</td>
-                        <td>Unlimited</td>
-                        <td>Unlimited</td>
-                        <td>Unlimited</td>
-                        <td>Unlimited</td>
+                        <td>2048</td>
+                        <td>4096</td>
+                        <td>8192</td>
+                        <td>16384</td>
+                        <td>131072</td>
                     </tr>
                     <tr>
                         <td>Databases</td>
+                        <td>8</td>
                         <td>16</td>
-                        <td>Unlimited</td>
-                        <td>Unlimited</td>
-                        <td>Unlimited</td>
-                        <td>Unlimited</td>
-                        <td>Unlimited</td>
+                        <td>32</td>
+                        <td>32</td>
+                        <td>32</td>
+                        <td>32</td>
                     </tr>
                     <tr>
                         <td>Replication</td>
                         <td>No</td>
-                        <td>1 Slave</td>
-                        <td>1 Slave</td>
-                        <td>1 Slave</td>
-                        <td>1 Master, 1 Slave</td>
-                        <td>1 Master, 1 Slave</td>
+                        <td>Read Only Slave</td>
+                        <td>Read Only Slave</td>
+                        <td>Read Only Slave</td>
+                        <td>Write Master</td>
+                        <td>Write Master</td>
                     </tr>
                     <tr>
                         <td>Backup</td>
@@ -151,17 +151,16 @@
                     </tr>
                     <tr>
                         <td> </td>
-                        <td><a class="btn btn-success" href="/signup?plan=0"><i class="icon-shopping-cart icon-white"></i> Order »</a></td>
-                        <td><a class="btn btn-success" href="/signup?plan=1"><i class="icon-shopping-cart icon-white"></i> Order »</a></td>
-                        <td><a class="btn btn-success" href="/signup?plan=2"><i class="icon-shopping-cart icon-white"></i> Order »</a></td>
-                        <td><a class="btn btn-success" href="/signup?plan=3"><i class="icon-shopping-cart icon-white"></i> Order »</a></td>
-                        <td><a class="btn btn-success" href="/signup?plan=4"><i class="icon-shopping-cart icon-white"></i> Order »</a></td>
-                        <td><a class="btn btn-success" href="/signup?plan=5"><i class="icon-shopping-cart icon-white"></i> Order »</a></td>
+                        <td><a class="btn btn-success" href="/signup">Order</td>
+                        <td><a class="btn btn-success" href="/signup/1">Order</td>
+                        <td><a class="btn btn-success" href="/signup/2">Order</td>
+                        <td><a class="btn btn-success" href="/signup/3">Order</td>
+                        <td><a class="btn btn-success" href="/signup/4">Order</td>
+                        <td><a class="btn btn-success" href="/signup/7">Order</td>
                     </tr>
                 </tbody>
             </table>
-            <p>Additional space at $8/GB</p>
-            <h5>We guarantee the cheapest and most affordable redis hosting around. No more paying $50/GB.<br><br>And we back that with a 30 day money back guarantee. Not satisfied for any reason? Click that refund button.</h5>
+            <center>Additional space at $8/GB</center>
         </div>
     </div>
 
@@ -217,6 +216,8 @@
         <p>We offer the most competitive prices/GB and all the features that you'd expect from a production redis platform. <br>We won't nickle and dime you or throttle your connections. And all instances are on blazingly fast dedicated hardware with 10GB uplinks. Redis FTW!</p>
         <h2>How do the plans work?</h2>
         <p>All plans come with a 14 day free trial. That is, your card is NOT charged at all until after 14 days. You can always cancel your service and any time. There are no risks on your part, just try out the service and stick around if you like it - we're so confirent that you will that we're giving 14 day free trials</p>
+        <h2>Is my credit card secure on your site?</h2>
+        <p>Yes. We do not store your credit card information on our servers at any point. We use a third party credit card processing service (stripe.com) that is fully PCI compliant. </p>
     </div>
 </template>
 
@@ -394,13 +395,17 @@
         <h3>Personal Information</h3>
         <div class="control-group">
             <div class="controls span12">
-                <input id="firstName" name="firstName" class="span6" type="text" placeholder="First Name">
-                <input id="lastName" name="lastName" class="span6" type="text" placeholder="Last Name">
+                <input id="firstName" name="firstName" class="span3" type="text" placeholder="First Name">
+                <input id="lastName" name="lastName" class="span3" type="text" placeholder="Last Name">
             </div>
         </div>
         <div class="control-group">
             <div class="controls span12">
-                <input class="span6" id="email" name="email" type="email" placeholder="Email Address">
+                <input class="span6" id="email" name="email" type="email" placeholder="Email Address" style="width: 46.5%">
+            </div>
+        </div>   
+        <div class="control-group">
+            <div class="controls span12">
                 <input id="passwordSignup" name="passwordSignup" class="span3" type="password" placeholder="Password">
                 <input id="password_againSignup" name="password_againSignup" class="span3" type="password" placeholder="Confirm Password">
             </div>
@@ -408,15 +413,15 @@
         <h3>Select your Plan</h3>
         <div class="control-group">
             <div class="controls span12">
-                <select name="plan" id="plan" class="span6">
-                  <option value="0">64MB - free</option>
-                  <option value="1">512MB - $5/month</option>
-                  <option value="2">1GB - $10/months</option>
-                  <option value="3">2GB - $20/month</option>
-                  <option value="4">4GB - $32/month</option>
-                  <option value="5">8GB - $64/month</option>
-                  <option value="6">16GB - $128/month</option>
-                  <option value="7">32GB - $256/month</option>
+                <select name="plan" id="plan" class="span3">
+                  <option value="0" {{ signup_plan "0"}}>64MB - free</option>
+                  <option value="1" {{ signup_plan "1"}}>512MB - $5/month</option>
+                  <option value="2" {{ signup_plan "2"}}>1GB - $10/months</option>
+                  <option value="3" {{ signup_plan "3"}}>2GB - $20/month</option>
+                  <option value="4" {{ signup_plan "4"}}>4GB - $32/month</option>
+                  <option value="5" {{ signup_plan "5"}}>8GB - $64/month</option>
+                  <option value="6" {{ signup_plan "6"}}>16GB - $128/month</option>
+                  <option value="7" {{ signup_plan "7"}}>32GB - $256/month</option>
                 </select>
             </div>
         </div>
@@ -424,13 +429,15 @@
         <h3>Payment Information</h3>
         <div class="control-group">
             <div class="controls span12">
-                <input id="creditCardNumber" name="creditCardNumber" class="span6" type="text" placeholder="Credit Card Number">
-                <input id="ccMonth" name="ccMonth" class="span1" type="text" placeholder="Month">
-                <input id="ccYear" name="ccYear" class="span1" type="text" placeholder="Year">
-                <input id="zipCode" name="zipCode" class="span2" type="text" placeholder="ZIP Code">
+                <input id="creditCardNumber" name="creditCardNumber" class="span4" type="text" placeholder="Credit Card Number" maxlength="20" size="20">
+                <input id="ccMonth" name="ccMonth" class="span1" type="text" placeholder="MM" maxlength="2" size="2">
+                <input id="ccYear" name="ccYear" class="span1" type="text" placeholder="YY" maxlength="2" size="2">
+                <input id="zipCode" name="zipCode" class="span1" type="text" placeholder="Zip" maxlength="5" size="5">
+                <img src="/img/stripe.png" style="margin-bottom: 10px; margin-left: 20px">
+                <br>
+                14 day free trial included. Your card will not be charged at this time.
             </div>
         </div>
-        14 day free trial included. Your card will not be charged at this time.
         </div>
 
         <button class="btn btn-success btn-large pull-right" type="submit" id="createUser" data-loading-text="Creating your account">Create Account</button>
