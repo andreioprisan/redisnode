@@ -1,3 +1,8 @@
+// for robots
+Meteor.Router.add('/robots.txt', 'GET', function(id) {
+  return [200, '/'];
+});
+
 Meteor.Router.add('/api/provision', 'POST', function(id) {
   return [200, 'ok'];
 });
