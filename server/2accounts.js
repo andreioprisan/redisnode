@@ -39,7 +39,7 @@ Meteor.methods({
 
 		var sys = Npm.require('sys');
 		var exec = Npm.require('child_process').exec;
-		var provCommand = "/etc/init.d/redis -p "+port+" -d "+databases+" -m "+memory+"mb -c "+connections+" -x "+password+" -a create && /etc/init.d/redis -p "+port+" -a start";
+		var provCommand = "ssh root@master.redisnode.com '/etc/init.d/redis -p "+port+" -d "+databases+" -m "+memory+"mb -c "+connections+" -x "+password+" -a create && /etc/init.d/redis -p "+port+" -a start'";
 		sys.print("will run:"+provCommand);
 
 		function puts(error, stdout, stderr) { 
