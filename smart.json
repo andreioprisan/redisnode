@@ -4,6 +4,7 @@
     "font-awesome": {},
     "npm": {},
     "HTML5-History-API": {},
-    "stripe": {}
+    "stripe": {},
+    "spiderable-404": {}
   }
 }

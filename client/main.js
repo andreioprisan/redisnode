@@ -102,7 +102,7 @@ Template.viewProfile.planName = function() {
 function getPlanName(id) {
     var plan = Plans.find({id: parseInt(id)}).fetch();
     if (plan.length == 0) {
-        return "64MB for free";
+        return "32MB for free";
     } else {
         return plan[0].name+" at $"+plan[0].cost+"/month";
     }
