@@ -7,7 +7,8 @@
       "npm": {},
       "HTML5-History-API": {},
       "stripe": {},
-      "spiderable-404": {}
+      "spiderable-404": {},
+      "external-file-loader": {}
     },
     "packages": {
       "router": {
@@ -39,6 +40,11 @@
         "git": "https://github.com/wojas/spiderable-404.git",
         "tag": "v0.6.4.0",
         "commit": "0fc22f72249fecddd39cfcf4bd5d590c26134b42"
+      },
+      "external-file-loader": {
+        "git": "https://github.com/davidd8/meteor-external-file-loader.git",
+        "tag": "v0.1.2",
+        "commit": "02ecaffb33b68a7ccf6d8b64693117d3fc19ae6b"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",

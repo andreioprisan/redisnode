@@ -4,8 +4,7 @@ Meteor.startup(function () {
 	Plans = new Meteor.Collection("Plans");
 	Instances = new Meteor.Collection("Instances");
 	Customers = new Meteor.Collection("Customers");
-
-	Plans.remove({});
+	Keys = new Meteor.Collection("Keys");
 
 	if (Plans.find().count() === 0) {
 		Plans.insert({name: "32MB", cost: 0, mb: 32, dbs: 8, conn: 1024, id: 0});
@@ -27,6 +26,10 @@ Meteor.startup(function () {
 	});
 
 	Meteor.publish("Customers", function () {
+	  return Customers.find({owner: this.userId});
+	});
+
+	Meteor.publish("Keys", function () {
 	  return Customers.find({owner: this.userId});
 	});
 
