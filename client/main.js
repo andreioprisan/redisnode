@@ -87,15 +87,15 @@ Template.editProfile.rendered = function() {
     App.myValidation (App.editProfileRules, App.editProfileMessages, App.editProfileForm, App.messagePlacement, App.editProfileHandleSubmit);
 };
 
-Template.viewProfile.user = function() {
+Template.dashboard.user = function() {
     return Meteor.user();
 };
 
-Template.viewProfile.instance = function() {
+Template.dashboard.instance = function() {
     return Instances.find().fetch()[0];
 }
 
-Template.viewProfile.planName = function() {
+Template.dashboard.planName = function() {
     return getPlanName(Meteor.user().profile.plan);
 };
 
@@ -115,6 +115,17 @@ Template.loggedin_header.helpers({
     },
 
     id: function() {
+        return Meteor.user()._id;
+    }
+});
+
+Template.header.helpers({
+    fullName: function() {
+        var profile = Meteor.user().profile;
+        return profile.firstName + ' ' + profile.lastName;
+    },
+
+    _id: function() {
         return Meteor.user()._id;
     }
 });

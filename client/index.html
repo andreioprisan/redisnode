@@ -8,32 +8,64 @@
 
 <body>
     <div class="container">
-    <div class="row-fluid">
+        <div class="row-fluid">
 
-    {{> header}}
+            {{> header}}
 
-    <div id="wrap">
-        <div class="container-fluid">
-            <div class="row-fluid">
-                <div id="main" class="span12">
-                    {{renderPage}}
+            <div id="wrap">
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div id="main" class="span12">
+                            {{renderPage}}
+                        </div>
+                    </div>
                 </div>
+                <div id="spacer"></div>
             </div>
+
+
+            <div id="footer">
+                <footer>
+                    <div class="container span12">
+                        <div class="row">
+                            <div class="span2">
+                                <h6>Product</h6>
+                                <a href="/page/what/">What is it?</a><br>                                
+                                <a href="/page/plans/">Plans</a><br>
+                            </div>
+                            <div class="span2">
+                                <h6> &nbsp;</h6>
+                                <a href="/page/features/">Features</a> <br>
+                                <a href="http://redisnode.statuspage.io/" target="_blank">Site Status</a>
+                            </div>
+                            <div class="span2">
+                              <h6>Company</h6>
+                              <a href="/page/privacy/">Privacy</a> <br>
+                              <a href="/page/terms/">Terms</a> <br>
+                            </div>
+                            <div class="span2">
+                              <h6>Community</h6>
+                              <a href="http://blog.redisnode.com/" target="_blank">Blog</a> <br>
+                              <a href="https://twitter.com/redisnode/" target="_blank">Twitter</a> <br>
+                            </div>
+                            <div class="span2">
+                              <h6> &nbsp;</h6>
+                              <a href="http://redisnode.uservoice.com" target="_blank">Support</a> <br>
+                              <a href="mailto:support@redisnode.com" target="_blank">Contact Us</a>
+                            </div>
+                            <div class="span2">
+                              <h6> &nbsp;</h6>
+                                <p class="muted credit">
+                                    &copy; <strong>RedisNode LLC</strong> 2013.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+
         </div>
-        <div id="spacer"></div>
-    </div>
-
-
-    <div id="footer">
-        <div class="container">
-            <p class="muted credit">
-                Built by <strong>RedisNode LLC</strong> 
-                  <a href="mailto:support@redisnode.com" target="_blank">Contact</a> 
-            </p>
-        </div>
-    </div>
-
-    </div>
     </div>
     
 </body>
@@ -51,12 +83,25 @@
                 </button>
                 <div class="nav-collapse collapse">
 
+                    {{#if currentUser }}
+
+                    <ul class="nav">
+                        <li class=""><a href="/users/{{_id}}"><img src="/img/head.png" style="height: 36px"></a></li>
+                        <li class="{{ TabActive 'dashboard'}}"><a href="/users/{{_id}}">Dashboard</a></li>
+                    </ul>
+
+                    {{else}}
+
                     <ul class="nav">
                         <li class=""><a href="/"><img src="/img/head.png" style="height: 36px"></a></li>
-                        <li class="{{ TabActive 'plans'}}"><a href="/s/plans">Plans</a></li>
-                        <li class="{{ TabActive 'about'}}"><a href="/s/about">FAQ</a></li>
-                        <!--<li class="{{ TabActive 'terms'}}"><a href="/s/terms">Terms</a></li>-->
+                        <li class="{{ TabActive 'what'}}"><a href="/page/what">What?</a></li>
+                        <li class="{{ TabActive 'features'}}"><a href="/page/features">Features</a></li>
+                        <li class="{{ TabActive 'plans'}}"><a href="/page/plans">Plans</a></li>
+                        <!--<li class="{{ TabActive 'documentation'}}"><a href="/s/terms">Documentation</a></li>-->
                     </ul>
+
+                    {{/if}}
+
 
                     {{#if currentUser }}
 
@@ -80,7 +125,7 @@
 <template name="plans">
     <h2>Hosting Plans. You want them, we have them</h2><br>
     <div class="row">
-        <div class="span12">
+        <div class="span10">
             
             <table class="table table-condensed table-hover">
                 <thead>
@@ -174,43 +219,93 @@
         <br>
         <h1>redis hosting</h1>
         <p class="lead">Pay as you go pricing. No commitment.</p>
+        <p class="lead">Now offering the largest free redis plan on the web.</p>
         <a class="btn btn-large btn-success" href="/signup">Get your free redis node</a>
         <br>
-        <br>
-        <p class="lead">Now offering the largest free redis plan on the web.</p>
       </div>
-      <br />
       <br />
 <hr>
 
       <div class="row-fluid">
         <div class="span4">
-          <h3>Replication & Failover</h3>
-          <p>Cluster replication & failover handled automatically.<br>Nothing to manage oon your end.</p>
+          <h3> never fail</h3>
+          <p>Cluster replication & failover handled automatically.<br>Nothing to manage on your end.</p>
         </div>
         <div class="span4">
-          <h3>Performance & Scale</h3>
+          <h3> cloud scale</h3>
           <p>Performance not dependent on instance size.<br> One-click upgrade without any downtime.</p>
         </div>        
         <div class="span4">
-          <h3>Backups & Restores</h3>
+          <h3> backup</h3>
           <p>Hourly backups to S3 storage, free on all plans. <br>On-demand backups available.</p>
         </div>
       </div>
+
+    <div class="jumbotron">        
+        <p class="lead"><a href="/page/features/">and much more..</a></center></p>
+    </div>
 <hr>
 </template>
 
-<template name="about">
+<template name="what">
     <div class="content">
         <h2>What is RedisNode?</h2>
         <p>RedisNode is all about kickass redis hosting for a fraction of the cost of doing it yourself and without the headaches that come with scaling and making your installation awesome.</p>
         <h2>How is RedisNode different?</h2>
         <p>We offer the most competitive prices/GB and all the features that you'd expect from a production redis platform. <br>We won't nickle and dime you or throttle your connections. And all instances are on blazingly fast dedicated hardware with 10GB uplinks. Redis FTW!</p>
-        <h2>How do the plans work?</h2>
-        <p>All plans come with a 14 day free trial. That is, your card is NOT charged at all until after 14 days. You can always cancel your service and any time. There are no risks on your part, just try out the service and stick around if you like it - we're so confirent that you will that we're giving 14 day free trials</p>
         <h2>Is my credit card secure on your site?</h2>
         <p>Yes. We do not store your credit card information on our servers at any point. We use a third party credit card processing service (stripe.com) that is fully PCI compliant. </p>
     </div>
+</template>
+
+<template name="features">
+  <div class="content">
+       <h1>Features. Lots of them. On every plan.</h1>
+
+      <div class="row-fluid">
+        <div class="span6">
+          <h2><i class="icon-refresh"></i> Replication & Failover</h2>
+          <p>Cluster replication & failover handled automatically.<br>Nothing to manage on your end.</p>
+        </div>
+        <div class="span6">
+          <h2><i class="icon-th-large"></i> Performance & Scale</h2>
+          <p>Performance not dependent on instance size.<br> One-click upgrade without any downtime.</p>
+        </div>        
+      </div>
+
+      <div class="row-fluid">
+        <div class="span6">
+          <h2><i class="icon-random"></i> Import & Export</h2>
+          <p>Migrate data to and from our service with one click.<br> Import all data from another redis hosting service by simply giving us the credentials to that instance, and we'll do all the heavy lifting. No fees or bandwidth fees.</p>
+        </div>        
+        <div class="span6">
+          <h2><i class="icon-hdd"></i> Backups & Restores</h2>
+          <p>Hourly backups to S3 storage, free on all plans. <br>On-demand backups available at $0.25/GB.</p>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span6">
+          <h2><i class="icon-info-sign"></i> Log Access</h2>
+          <p>View full logs for your instance in the browser. Optionally export logs to your S3 bucket.</p>
+        </div>
+        <div class="span6">
+          <h2><i class="icon-wrench"></i> Configuration</h2>
+          <p>Get full configuration file access. No artificial limits from our side.</p>
+        </div>
+      </div>
+
+
+      <div class="row-fluid">
+        <div class="span6">
+          <h2><i class="icon-tasks"></i> API</h2>
+          <p>Automate instance provisioning and configuration. In beta.</p>
+        </div>
+        <div class="span6">
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <template name="loggedin_header">
@@ -218,9 +313,9 @@
     <p class="pull-right"><strong>Logging In!</strong></p>
     {{else}}
     <ul class="nav pull-right">
-        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome, {{ fullName }} <b class="caret"></b></a>
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Hi, {{ fullName }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
-                <li><a href="/users/{{ id }}/edit"><i class="icon-cog"></i> Edit Profile</a></li>
+                <li><a href="/users/{{ id }}/edit"><i class="icon-cog"></i> Edit Contact Info</a></li>
                 <li class="divider"></li>
                 <li><a href="/logout"><i class="icon-off"></i> Logout</a></li>
             </ul>
@@ -231,42 +326,15 @@
 </template>
 
 
-<template name="viewProfile">
+<template name="dashboard">
+    <br>
     {{#with user}}
 
+    <h3>Instances</h3>
+    <br>
 
-    <div class="row-fluid">
-        <div class="span10">
-            <h3>Account Details</h3>
-        </div>
-        <div class="span2 pull-right action">
-            <a href="/users/{{_id}}/edit" class='btn btn-primary btn-block'>Modify</a>
-        </div>
-    </div>
+    <div class="hero-unit span6">
 
-    <div class="spacer"></div>
-    <hr>
-
-    <h3>You</h3>
-    <table class="table">
-        <tr>
-            <th>First name: </th>
-            <td>{{ profile.firstName}}</td>
-        </tr>
-
-        <tr>
-            <th>Last name: </th>
-            <td>{{ profile.lastName}}</td>
-        </tr>
-
-        <tr>
-            <th>Username: </th>
-            <td>{{ username}}</td>
-        </tr>
-
-    </table>
-
-    <h3>Your redis instance</h3>
     <table class="table">
         <tr>
             <th>Plan: </th>
@@ -287,20 +355,22 @@
             <td>{{ instance.password }}</td>
         </tr>
     </table>
+    </div>
 
     {{/with}}
 </template>
 
 
 <template name="editProfile">
+    <br>
     {{#with user}}
 
     <div class="row-fluid">
         <div class="span10">
-            <h3>Account Details</h3>
+            <h3>Edit Contact Info</h3>
         </div>
         <div class="span2 pull-right action">
-            <a href="/users/{{_id}}" class='btn btn-primary btn-block'>Modify</a>
+            <a href="/users/{{_id}}" class='btn btn-primary btn-block'>Back to Dashboard</a>
         </div>
     </div>
 
@@ -329,6 +399,7 @@
             <div class="controls">
                 <label>Plan</label>
                 <input disabled class="span12" id="bio" name="bio" placeholder="plan name" value="{{planName}}">
+                You cannot upgrade or downgrade at this time.
             </div>
         </div>
 
@@ -346,7 +417,7 @@
 
 <!-- Login -->
 <template name="login">
-    
+    <br>
     <h3>
         Login to your account
         <p class="pull-right"><small>New user? <a href="/signup">Sign up now!</a></small></p>
@@ -376,6 +447,7 @@
 
 <!-- Signup -->
 <template name="signup">
+    <br>
     <h3>
         Signup for a new account
         <p class="pull-right"><small>Already have an account? <a href="/login">Login</a></small></p>
@@ -387,8 +459,8 @@
         <h3>Personal Information</h3>
         <div class="control-group">
             <div class="controls span12">
-                <input id="firstName" name="firstName" class="span3" type="text" placeholder="First Name">
-                <input id="lastName" name="lastName" class="span3" type="text" placeholder="Last Name">
+                <input id="firstName" name="firstName" class="span3" type="text" placeholder="First Name" style="width: 23.0%">
+                <input id="lastName" name="lastName" class="span3" type="text" placeholder="Last Name" style="width: 23.3%">
             </div>
         </div>
         <div class="control-group">
@@ -398,8 +470,8 @@
         </div>   
         <div class="control-group">
             <div class="controls span12">
-                <input id="passwordSignup" name="passwordSignup" class="span3" type="password" placeholder="Password">
-                <input id="password_againSignup" name="password_againSignup" class="span3" type="password" placeholder="Confirm Password">
+                <input id="passwordSignup" name="passwordSignup" class="span3" type="password" placeholder="Password" style="width: 23.0%">
+                <input id="password_againSignup" name="password_againSignup" class="span3" type="password" placeholder="Confirm Password" style="width: 23.3%">
             </div>
         </div>   
         <h3>Select your Plan</h3>
@@ -421,10 +493,10 @@
         <h3>Payment Information</h3>
         <div class="control-group">
             <div class="controls span12">
-                <input id="creditCardNumber" name="creditCardNumber" class="span4" type="text" placeholder="Credit Card Number" maxlength="20" size="20">
-                <input id="ccMonth" name="ccMonth" class="span1" type="text" placeholder="MM" maxlength="2" size="2">
-                <input id="ccYear" name="ccYear" class="span1" type="text" placeholder="YY" maxlength="2" size="2">
-                <input id="zipCode" name="zipCode" class="span1" type="text" placeholder="Zip" maxlength="5" size="5">
+                <input id="creditCardNumber" name="creditCardNumber" class="span4" type="text" placeholder="Credit Card Number" maxlength="20" size="20" style="width: 33.0%">
+                <input id="ccMonth" name="ccMonth" class="span1" type="text" placeholder="MM" maxlength="2" size="2" style="width: 4.2%">
+                <input id="ccYear" name="ccYear" class="span1" type="text" placeholder="YY" maxlength="2" size="2" style="width: 3.5%">
+                <input id="zipCode" name="zipCode" class="span1" type="text" placeholder="Zip" maxlength="5" size="5" style="width: 5.3%">
             </div>
         </div>
         </div>
@@ -488,7 +560,21 @@
     <div class="content">
         <h1>Terms of Service</h1><br>
         <p>
+            You own your data, at all times. You may always export all data and close your account. If you do close your account, all data and customer information will be deleted from our system.<br>
+            You may only have one free node per account.<br>
+            You may not reverse engineer our technology stack or hacking our platform. Attempting to do so will result in your access being banned.<br>
+        </p>
+    </div>
+</template>
 
+<template name="privacy">
+    <div class="content">
+        <h1>Privacy</h1><br>
+        <p>
+            We use Google Analytics to understand where our users come from and how effective our marketing campaigns are.<br>
+            We do not use other tracking technologies or cookies for user tracking.<br>
+            We will never share your email with another third party service.<br>
+            If you give us your contact informatio, we will not sell that information to third party marketing sources. We will only use that information to send you updates on our product offerings.
         </p>
     </div>
 </template>

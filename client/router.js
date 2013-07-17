@@ -4,7 +4,7 @@ Meteor.Router.add({
         return 'home';
     },
 
-    '/s/:page': function(page) {
+    '/page/:page': function(page) {
         Session.set("current_page", page);
         return page;
     },
@@ -51,9 +51,14 @@ Meteor.Router.add({
         return 'password_update';
     },
 
+    '/dashboard': function(id) {
+        Session.set("current_page", 'dashboard');
+        return 'dashboard';
+    },
+
     '/users/:id': function(id) {
-        Session.set("current_page", 'viewProfile');
-        return 'viewProfile';
+        Session.set("current_page", 'dashboard');
+        return 'dashboard';
     },
 
     '/users/:id/edit': function(id) {
