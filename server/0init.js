@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-	process.env.MAIL_URL = "smtp://postmaster@redisnode.com:402ma3iic7n8@smtp.mailgun.org:465";
+	process.env.MAIL_URL = "smtp://postmaster@redisnode.com:REPLACEME@smtp.mailgun.org:465";
 
 	Plans = new Meteor.Collection("Plans");
 	Instances = new Meteor.Collection("Instances");
@@ -34,19 +34,18 @@ Meteor.startup(function () {
 	});
 
 	var os = Npm.require("os");
-	if (os.hostname() == "master.redisnode.com" ||
-		os.hostname() == "slave.redisnode.com") {
+	if (os.hostname() == "master.redisnode.com") {
 		isProd = 1;
 	} else {
 		isProd = 0;
 	}
 
 	if (!isProd) {
-		stripe_secret = "sk_test_2cGa3day3OCg1ZVTPFPuRetY";
-		stripe_public = "pk_test_ujzLsEV3pNMBj9KIv5qkknUC";		
+		stripe_secret = "REPLACEME";
+		stripe_public = "REPLACEME";		
 	} else {
-		stripe_secret = "sk_live_UEu9EQkB1BdOUOBrzYcXudBG";
-		stripe_public = "pk_live_voZnzGKwR0aIZ3TjXd0vQhof";
+		stripe_secret = "REPLACEME";
+		stripe_public = "REPLACEME";
 	}
 
 	Stripe = StripeAPI(stripe_secret);
