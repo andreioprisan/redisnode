@@ -1,5 +1,5 @@
 Meteor.startup(function () {
-	process.env.MAIL_URL = "smtp://postmaster%40redisnode.com:402ma3iic7n8@smtp.mailgun.org:587";
+	process.env.MAIL_URL = "smtp://postmaster%40redisnode.com:REPLACEME@smtp.mailgun.org:587";
 });
 
 Meteor.methods({
