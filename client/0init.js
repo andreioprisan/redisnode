@@ -14,9 +14,9 @@ if (window.location.hostname == "redisnode.com" || window.location.hostname == "
 }
 
 if (!isProd) {
-    stripe_public = "pk_test_ujzLsEV3pNMBj9KIv5qkknUC";     
+    stripe_public = "REPLACEME";     
 } else {
-    stripe_public = "pk_live_voZnzGKwR0aIZ3TjXd0vQhof";
+    stripe_public = "REPLACEME";
 }
 Stripe.setPublishableKey(stripe_public);
 
